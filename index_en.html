@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PoyoPoyo Softbody Documentation</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Segoe UI, Helvetica, Arial, sans-serif;
+    background:#f5f5f5;
+    color:#222;
+}
+
+/* ===========================
+   Top Bar
+=========================== */
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+
+    height:64px;
+
+    background:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 24px;
+
+    border-bottom:1px solid #ddd;
+
+    z-index:1000;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.language select{
+    padding:6px 12px;
+    font-size:15px;
+}
+
+/* ===========================
+   Sidebar
+=========================== */
+
+aside{
+
+    position:fixed;
+
+    top:64px;
+    left:0;
+    bottom:0;
+
+    width:280px;
+
+    overflow:auto;
+
+    background:#ffffff;
+
+    border-right:1px solid #ddd;
+
+    padding:30px;
+}
+
+aside ul{
+    list-style:none;
+}
+
+aside li{
+    margin:8px 0;
+}
+
+aside a{
+
+    text-decoration:none;
+    color:#333;
+
+}
+
+aside a:hover{
+
+    color:#1976d2;
+
+}
+
+/* hierarchy */
+
+.level1{
+    margin-left:0;
+    font-weight:bold;
+}
+
+.level2{
+    margin-left:20px;
+}
+
+.level3{
+    margin-left:40px;
+}
+
+/* ===========================
+   Main
+=========================== */
+
+main{
+
+    margin-left:280px;
+    padding-top:64px;
+
+}
+
+.content{
+
+    max-width:1000px;
+
+    margin:auto;
+
+    padding:50px;
+
+}
+
+/* ===========================
+   Sections
+=========================== */
+
+section{
+
+    margin-bottom:100px;
+    scroll-margin-top:80px;
+
+}
+
+h1{
+
+    margin-bottom:20px;
+
+    font-size:40px;
+
+}
+
+h2{
+
+    margin-bottom:18px;
+
+    font-size:30px;
+
+}
+
+h3{
+
+    margin-bottom:14px;
+
+    font-size:22px;
+
+}
+
+.placeholder{
+
+    color:#777;
+    line-height:1.8;
+
+}
+
+hr{
+
+    margin:40px 0;
+
+    border:none;
+    border-top:1px solid #ddd;
+
+}
+
+/* ===========================
+   Parameter Table
+=========================== */
+
+.param-table{
+    width:100%;
+    border-collapse:collapse;
+    margin:20px 0;
+    font-size:15px;
+}
+
+.param-table th,
+.param-table td{
+    border:1px solid #ddd;
+    padding:12px 16px;
+    text-align:left;
+    vertical-align:top;
+}
+
+.param-table th{
+    background:#f0f0f0;
+    font-weight:bold;
+}
+
+.param-table tr:nth-child(even){
+    background:#fafafa;
+}
+
+.param-table td:first-child{
+    width:260px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+Top Bar
+======================================================= -->
+
+<header>
+
+    <!-- Tool Name -->
+    <div class="logo">
+        PoyoPoyo Softbody
+    </div>
+
+    <!-- Language Selector -->
+    <div class="language">
+
+        <!--
+            Switch between the English / Japanese version with JavaScript,
+            or
+            switch pages like
+            docs/en/index.html
+            docs/ja/index.html
+        -->
+
+        <select id="languageSelect">
+
+            <option value="ja">日本語</option>
+            <option value="en" selected>English</option>
+
+        </select>
+
+    </div>
+
+</header>
+
+<!-- =======================================================
+Sidebar
+======================================================= -->
+
+<aside>
+
+<ul>
+
+<li class="level1"><a href="#about">Overview</a></li>
+
+<li class="level2"><a href="#demo">Demo</a></li>
+
+<li class="level2"><a href="#features">Features</a></li>
+
+<li class="level2"><a href="#versions">Supported Versions</a></li>
+
+<li class="level1"><a href="#quickstart">How to Use</a></li>
+
+<li class="level2"><a href="#materialsetup">Material Setup</a></li>
+
+<li class="level2"><a href="#actorsetup">Actor Setup</a></li>
+
+<li class="level3"><a href="#constants">Parameters</a></li>
+
+<li class="level3"><a href="#rtgroup">RT Group</a></li>
+
+<li class="level3"><a href="#materialslots">Material Slot Names</a></li>
+
+<li class="level3"><a href="#collider">Collision Setup</a></li>
+
+<li class="level1"><a href="#changelog">ChangeLog</a></li>
+
+</ul>
+
+</aside>
+
+<!-- =======================================================
+Main
+======================================================= -->
+
+<main>
+
+<div class="content">
+
+<!-- ======================================================= -->
+
+<img src="images/Logo.png" alt="Logo" style="width: 100%; height: auto;">
+
+<section id="about">
+
+<h1>Overview</h1>
+
+<p>PoyoPoyo Softbody is a soft body deformation system for Unreal Engine.</p>
+<p>It deforms meshes according to a GPU soft body simulation driven by Niagara.</p>
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="demo">
+
+<h2>Demo</h2>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7hkYUHRfSDo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="features">
+
+<h2>Features</h2>
+
+<p>・Soft body deformation with a sense of volume, based on a 3D mass-spring model simulation</p>
+<p>・GPU computation for fast and lightweight performance</p>
+<p>・Easy to maintain: not a plugin, but an asset pack made up only of Niagara Systems and Blueprints</p>
+<p>・Collision detection with UE's standard Box, Sphere and Capsule collisions</p>
+<p>・Multiple jiggling parts can be set up on a single model</p>
+<p>・Pulling and dragging, for example with the mouse</p>
+
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="versions">
+
+<h2>Supported Versions</h2>
+
+<p>UE5.7 - 5.8</p>
+
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="quickstart">
+
+<h1>How to Use</h1>
+
+<p>Attach SoftbodySystem/Core/SoftbodySimulation as a Child Actor to the mesh you want to deform.</p>
+<p>In this system, the Niagara System of the dedicated Actor attached to the mesh writes the displacement of the mass points into a render target, and the mesh is then deformed by the material's World Position Offset based on that data. For this reason, you set up both the material of the mesh and the Actor that contains the mesh.</p>
+<p>The dedicated Actor (SoftbodySimulation) creates the render target and the dynamic material instance at runtime and assigns them to the mesh, so you normally do not need to worry about creating render targets or dynamic material instances yourself.</p>
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="materialsetup">
+
+<h2>Material Setup</h2>
+
+<p>Open SoftbodySystem/Material/M_SoftbodyDemo or M_SoftbodyDemo_VertexColorMask, copy the nodes that lead into World Position Offset into the material of the mesh you want to use, and connect them to its World Position Offset.</p>
+<img src="images/MaterialWPONodes.png" alt="MaterialWPONodes" style="width: 100%; height: auto;">
+<p>Four RenderTargetTextures with the prefixes A, B, C and D are available, but you can increase or decrease this number by editing the asset.</p>
+<p>M_SoftbodyDemo_VertexColorMask is an example of masking the displacement amount using the R and G channels of the vertex color.</p>
+<img src="images/VertexColorAsMask.png" alt="VertexColorAsMaskExample" style="width: 100%; height: auto;" >
+
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="actorsetup">
+
+<h2>Actor Setup</h2>
+<img src="images/Attach.png" alt="Attach" style="width: 100%; height: auto;">
+<p>Attach SoftbodySystem/Core/SoftbodySimulation as a Child Actor to the part of the mesh you want to deform in the Actor you are using.</p>
+<p></p>
+
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="constants">
+
+<h3>Parameters</h3>
+
+<img src="images/Parameters.png" style="width:100%; height:auto;">
+
+<p>Parameters of SoftbodySimulation</p>
+
+<table class="param-table">
+
+<tr>
+    <th>Parameter</th>
+    <th>Description</th>
+</tr>
+
+<tr>
+    <td>Spring Constant</td>
+    <td>Spring constant.</td>
+</tr>
+
+<tr>
+    <td>DeformMatSlotNames</td>
+    <td>Array of the material slot names of the parts of the mesh that should deform (must be specified).</td>
+</tr>
+
+<tr>
+    <td>RT Group</td>
+    <td>When attaching several SoftbodySimulations to a single mesh, specify a unique ID number for each one.</td>
+</tr>
+
+<tr>
+    <td>Sphere Radius</td>
+    <td>Radius of the soft body sphere (shown as a red sphere in the viewport).</td>
+</tr>
+
+<tr>
+    <td>FixVolumeCenter</td>
+    <td>Local coordinates of the spherical fixing volume that determines which mass points are fixed (shown as a white sphere in the viewport).</td>
+</tr>
+
+<tr>
+    <td>FixVolumeRadius</td>
+    <td>Radius of the fixing volume.</td>
+</tr>
+
+<tr>
+    <td>FixVolumeSoftness</td>
+    <td>How strongly the boundary of the fixing volume is blurred (0.0 - 1.0).</td>
+</tr>
+
+<tr>
+    <td>DebugSprites</td>
+    <td>Displays debug sprites representing the mass points at runtime.</td>
+</tr>
+
+<tr>
+    <td>Damping</td>
+    <td>Amount of velocity damping.</td>
+</tr>
+
+<tr>
+    <td>PressureExpansion</td>
+    <td>Coefficient that adjusts the amount of expansion caused by internal pressure.</td>
+</tr>
+
+</table>
+
+<h4>・About the fixing volume</h4>
+
+<img src="images/SizeAndFixedZone.png" style="width:100%; height:auto;">
+
+<p>
+The soft body sphere is displayed as a red sphere and the fixing volume as a white sphere in the viewport.
+</p>
+
+<p>
+If you place them so that part of the red sphere overlaps the white sphere, as in the default state, the mass points inside the overlapping area are fixed relative to the SoftbodySimulation Child Actor component.
+</p>
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="rtgroup">
+
+<h3>RT Group Setup</h3>
+
+
+<p>RT Group specifies which material parameters, such as the render target, are used.</p>
+<p>When attaching several SoftbodySimulation components to a single mesh, assign unique numbers in order starting from 0. The material needs parameters starting with the letter that corresponds to the RT Group (0:A, 1:B, 2:C, ...).</p>
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="materialslots">
+
+<h3>Material Slot Names</h3>
+<p>Open the editor of the SkeletalMesh or StaticMesh you are using and check the material slot names.</p>
+<img src="images/MaterialSlotName.png" style="width: 100%; height: auto;">
+<p>
+Enter the material slot names of every part you want to deform into DeformMatSlotNames on the SoftbodySimulation component described above.
+</p>
+<img src="images/MaterialSlotName2.png" style="width: 100%; height: auto;">
+</section>
+
+<!-- ======================================================= -->
+
+<section id="collider">
+
+<h3>Collision Setup</h3>
+<p>
+This system reacts to BoxCollision, SphereCollision and CapsuleCollision components that have the "SoftbodyCollider" tag.
+<img src="images/Collider.png" style="width: 100%; height: auto;">
+</p>
+Add the "SoftbodyCollider" tag to the ComponentTags of the collision component you want to use as a collider.
+
+<img src="images/Grab.png" style="width: 100%; height: auto;">
+<p>
+For an example of how pulling is implemented, see SoftbodySystem/Demo/PPS_PlayerCharacter.
+</p>
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="changelog">
+
+<h1>ChangeLog</h1>
+
+<!--
+Write the version history here
+
+Example
+
+v1.0.0
+・Initial Release
+
+v1.1.0
+・Bug Fix
+-->
+
+<p>
+
+2026/08/08 v1.0.0
+・Initial Release
+
+</p>
+
+</section>
+
+</div>
+
+</main>
+
+<script>
+
+/*
+    Language selector
+
+    If you later switch pages like
+
+    /en/
+    /ja/
+
+    just rewriting location.href is enough
+*/
+
+document
+.getElementById("languageSelect")
+.addEventListener("change", function(){
+
+    console.log("Selected:", this.value);
+
+});
+
+</script>
+
+</body>
+</html>

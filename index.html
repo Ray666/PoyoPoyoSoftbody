@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PoyoPoyo Softbody Documentation</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Segoe UI, Helvetica, Arial, sans-serif;
+    background:#f5f5f5;
+    color:#222;
+}
+
+/* ===========================
+   Top Bar
+=========================== */
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+
+    height:64px;
+
+    background:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 24px;
+
+    border-bottom:1px solid #ddd;
+
+    z-index:1000;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.language select{
+    padding:6px 12px;
+    font-size:15px;
+}
+
+/* ===========================
+   Sidebar
+=========================== */
+
+aside{
+
+    position:fixed;
+
+    top:64px;
+    left:0;
+    bottom:0;
+
+    width:280px;
+
+    overflow:auto;
+
+    background:#ffffff;
+
+    border-right:1px solid #ddd;
+
+    padding:30px;
+}
+
+aside ul{
+    list-style:none;
+}
+
+aside li{
+    margin:8px 0;
+}
+
+aside a{
+
+    text-decoration:none;
+    color:#333;
+
+}
+
+aside a:hover{
+
+    color:#1976d2;
+
+}
+
+/* hierarchy */
+
+.level1{
+    margin-left:0;
+    font-weight:bold;
+}
+
+.level2{
+    margin-left:20px;
+}
+
+.level3{
+    margin-left:40px;
+}
+
+/* ===========================
+   Main
+=========================== */
+
+main{
+
+    margin-left:280px;
+    padding-top:64px;
+
+}
+
+.content{
+
+    max-width:1000px;
+
+    margin:auto;
+
+    padding:50px;
+
+}
+
+/* ===========================
+   Sections
+=========================== */
+
+section{
+
+    margin-bottom:100px;
+    scroll-margin-top:80px;
+
+}
+
+h1{
+
+    margin-bottom:20px;
+
+    font-size:40px;
+
+}
+
+h2{
+
+    margin-bottom:18px;
+
+    font-size:30px;
+
+}
+
+h3{
+
+    margin-bottom:14px;
+
+    font-size:22px;
+
+}
+
+.placeholder{
+
+    color:#777;
+    line-height:1.8;
+
+}
+
+hr{
+
+    margin:40px 0;
+
+    border:none;
+    border-top:1px solid #ddd;
+
+}
+
+/* ===========================
+   Parameter Table
+=========================== */
+
+.param-table{
+    width:100%;
+    border-collapse:collapse;
+    margin:20px 0;
+    font-size:15px;
+}
+
+.param-table th,
+.param-table td{
+    border:1px solid #ddd;
+    padding:12px 16px;
+    text-align:left;
+    vertical-align:top;
+}
+
+.param-table th{
+    background:#f0f0f0;
+    font-weight:bold;
+}
+
+.param-table tr:nth-child(even){
+    background:#fafafa;
+}
+
+.param-table td:first-child{
+    width:260px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+Top Bar
+======================================================= -->
+
+<header>
+
+    <!-- Tool Name -->
+    <div class="logo">
+        PoyoPoyo Softbody
+    </div>
+
+    <!-- Language Selector -->
+    <div class="language">
+
+        <!--
+            JavaScriptで英語版/日本語版へ切り替える
+            または
+            docs/en/index.html
+            docs/ja/index.html
+            のようにページを切り替える用途
+        -->
+
+        <select id="languageSelect">
+
+            <option value="ja">日本語</option>
+            <option value="en">English</option>
+
+        </select>
+
+    </div>
+
+</header>
+
+<!-- =======================================================
+Sidebar
+======================================================= -->
+
+<aside>
+
+<ul>
+
+<li class="level1"><a href="#about">概要</a></li>
+
+<li class="level2"><a href="#demo">デモ</a></li>
+
+<li class="level2"><a href="#features">機能</a></li>
+
+<li class="level2"><a href="#versions">対応バージョン</a></li>
+
+<li class="level1"><a href="#quickstart">使い方</a></li>
+
+<li class="level2"><a href="#materialsetup">マテリアルのセットアップ</a></li>
+
+<li class="level2"><a href="#actorsetup">アクターのセットアップ</a></li>
+
+<li class="level3"><a href="#constants">パラメータ</a></li>
+
+<li class="level3"><a href="#rtgroup">RT Group</a></li>
+
+<li class="level3"><a href="#materialslots">マテリアルスロット名の設定</a></li>
+
+<li class="level3"><a href="#collider">コリジョンの設定</a></li>
+
+<li class="level1"><a href="#changelog">更新履歴</a></li>
+
+</ul>
+
+</aside>
+
+<!-- =======================================================
+Main
+======================================================= -->
+
+<main>
+
+<div class="content">
+
+<!-- ======================================================= -->
+
+<img src="images/Logo.png" alt="Logo" style="width: 100%; height: auto;">
+
+<section id="about">
+
+<h1>概要</h1>
+
+<p>PoyoPoyo SoftbodyはUnreal Engine向けソフトボディ変形システムです。</p>
+<p>NiagaraによるGPUソフトボディシミュレーションに従ってメッシュを変形させることができます。</p>
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="demo">
+
+<h2>デモ</h2>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7hkYUHRfSDo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="features">
+
+<h2>機能</h2>
+
+<p>・3Dばね質点モデルシミュレーションによる体積を感じさせるソフトボディ変形</p>
+<p>・GPU演算―高速軽快な動作</p>
+<p>・プラグインではなくNiagaraSystem/Blueprintのみからなるアセットパックであるため保守が容易</p>
+<p>・UE標準のBox, Sphere, Capsuleコリジョンとの当たり判定</p>
+<p>・１つのモデルに複数の揺れる部位を設定</p>
+<p>・マウスドラッグなどによるひっぱり</p>
+
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="versions">
+
+<h2>対応バージョン</h2>
+
+<p>UE5.7 - 5.8</p>
+
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="quickstart">
+
+<h1>使い方</h1>
+
+<p>SoftbodySystem/Core/SoftbodySimulationを変形させたいメッシュにChildActorとしてアタッチします。</p>
+<p>本システムはメッシュにアタッチした専用ActorのNiagaraSystemが質点の変位をレンダーターゲットに書き込み、それを元にマテリアルのWorldPositionOffsetでメッシュを変形させます。そのためメッシュのマテリアルとメッシュが含まれているActorのセットアップを行います。</p>
+<p>専用Actor(SoftbodySimulation)がランタイムでレンダーターゲットとダイナミックマテリアルインスタンスを作成してメッシュに割り当てるため、ユーザーは通常、レンダーターゲットやダイナミックマテリアルインスタンスの作成を意識する必要はありません。</p>
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="materialsetup">
+
+<h2>マテリアルのセットアップ</h2>
+
+<p>SoftbodySystem/Material/M_SoftbodyDemoまたはM_SoftbodyDemo_VertexColorMaskを開き、World Position Offsetにつながるノードを使用するメッシュのマテリアルにコピーしてWorld Position Offsetにつなぎます。</p>
+<img src="images/MaterialWPONodes.png" alt="MaterialWPONodes" style="width: 100%; height: auto;">
+<p>A,B,C,Dのprefixから始まる4つのRenderTargetTextureを使用できるようになっていますが、アセットを編集することで増減可能です。</p>
+<p>M_SoftbodyDemo_VertexColorMaskは、頂点カラーのR,Gを用いた変位量マスクの例です。</p>
+<img src="images/VertexColorAsMask.png" alt="VertexColorAsMaskExample" style="width: 100%; height: auto;" >
+
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="actorsetup">
+
+<h2>アクターのセットアップ</h2>
+<img src="images/Attach.png" alt="Attach" style="width: 100%; height: auto;">
+<p>SoftbodySystem/Core/SoftbodySimulationを使用するActorのメッシュの変形させたい部分にChildActorとしてアタッチします。</p>
+<p></p>
+
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="constants">
+
+<h3>パラメータ</h3>
+
+<img src="images/Parameters.png" style="width:100%; height:auto;">
+
+<p>SoftbodySimulationのパラメータ</p>
+
+<table class="param-table">
+
+<tr>
+    <th>パラメータ</th>
+    <th>説明</th>
+</tr>
+
+<tr>
+    <td>Spring Constant</td>
+    <td>ばね定数</td>
+</tr>
+
+<tr>
+    <td>DeformMatSlotNames</td>
+    <td>メッシュの変形する部分のマテリアルスロット名の配列（必ず指定）</td>
+</tr>
+
+<tr>
+    <td>RT Group</td>
+    <td>1つのメッシュに複数のSoftbodySimulationをアタッチする場合は重複しないID番号を指定します。</td>
+</tr>
+
+<tr>
+    <td>Sphere Radius</td>
+    <td>ソフトボディ球の半径（ビューポートでは赤い球で表示されます）。</td>
+</tr>
+
+<tr>
+    <td>FixVolumeCenter</td>
+    <td>固定する質点を指定する球状固定ボリュームのローカル座標（ビューポートでは白い球で表示されます）。</td>
+</tr>
+
+<tr>
+    <td>FixVolumeRadius</td>
+    <td>固定ボリュームの半径。</td>
+</tr>
+
+<tr>
+    <td>FixVolumeSoftness</td>
+    <td>固定ボリュームの境界をぼかす強さ（0.0～1.0）。</td>
+</tr>
+
+<tr>
+    <td>DebugSprites</td>
+    <td>実行時に質点を表すデバッグ用スプライトを表示します。</td>
+</tr>
+
+<tr>
+    <td>Damping</td>
+    <td>速度の減衰量。</td>
+</tr>
+
+<tr>
+    <td>PressureExpansion</td>
+    <td>内部圧力による膨張量を調節する係数。</td>
+</tr>
+
+</table>
+
+<h4>・固定ボリュームについて</h4>
+
+<img src="images/SizeAndFixedZone.png" style="width:100%; height:auto;">
+
+<p>
+ソフトボディ球は赤い球、固定ボリュームは白い球としてビューポートに表示されます。
+</p>
+
+<p>
+デフォルト状態のように赤い球の一部が白い球と重なるように配置すると、その重なっている部分の質点が
+SoftbodySimulation ChildActorコンポーネントに対して固定されます。
+</p>
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="rtgroup">
+
+<h3>RT Groupの設定</h3>
+
+
+<p>RT GroupはマテリアルのどのレンダーターゲットなどのParameterを使用するか指定します。</p>
+<p>１つのメッシュに複数のSoftbodySimulationコンポーネントをアタッチする場合は重複しない番号を0から順に指定してください。マテリアル側にRT Groupに対応するアルファベット(0:A, 1:B, 2:C・・・)から始まるパラメータが必要です。</p>
+
+</section>
+
+<!-- ======================================================= -->
+
+<section id="materialslots">
+
+<h3>マテリアルスロット名の設定</h3>
+<p>使用するSkeletalMeshまたはStaticMeshのエディタを開き、マテリアルスロット名を確認します。</p>
+<img src="images/MaterialSlotName.png" style="width: 100%; height: auto;">
+<p>
+前述のSoftbodySimulationコンポーネントのDeformMatSlotNamesに変形させたい部分すべてのマテリアルスロット名を入力します。
+</p>
+<img src="images/MaterialSlotName2.png" style="width: 100%; height: auto;">
+</section>
+
+<!-- ======================================================= -->
+
+<section id="collider">
+
+<h3>コリジョンの設定</h3>
+<p>
+本システムは"SoftbodyCollider"タグがついたBoxCollision, SphereCollision, CapsuleCollisionに反応します。
+<img src="images/Collider.png" style="width: 100%; height: auto;">
+</p>
+コライダーとして使用するコリジョンコンポーネントのComponentTagsに"SoftbodyCollider"タグを追加してください。
+
+<img src="images/Grab.png" style="width: 100%; height: auto;">
+<p>
+ひっぱりの実装についてはSoftbodySystem/Demo/PPS_PlayerCharacterを参照してください。
+</p>
+
+</section>
+
+<hr>
+
+<!-- ======================================================= -->
+
+<section id="changelog">
+
+<h1>ChangeLog</h1>
+
+<!--
+バージョン履歴を書く
+
+例
+
+v1.0.0
+・Initial Release
+
+v1.1.0
+・Bug Fix
+-->
+
+<p>
+
+2026/08/08 v1.0.0
+・リリース
+
+</p>
+
+</section>
+
+</div>
+
+</main>
+
+<script>
+
+/*
+    Language selector
+
+    後から
+
+    /en/
+    /ja/
+
+    のようにページ切替する場合は
+    location.hrefを書き換えるだけでOK
+*/
+
+document
+.getElementById("languageSelect")
+.addEventListener("change", function(){
+
+    console.log("Selected:", this.value);
+
+});
+
+</script>
+
+</body>
+</html>
