@@ -563,22 +563,11 @@ v1.1.0
 
 <script>
 
-/*
-    Language selector
-
-    If you later switch pages like
-
-    /en/
-    /ja/
-
-    just rewriting location.href is enough
-*/
-
 document
 .getElementById("languageSelect")
 .addEventListener("change", function(){
 
-    console.log("Selected:", this.value);
+    location.href = (this.value === "en" ? "index_en.html" : "index.html") + location.hash;
 
 });
 
